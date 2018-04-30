@@ -8,7 +8,11 @@ file.close()
 
 f= open("lines.txt","w+")
 
-for episode in episodes[0:2]:
+
+charLinesData = {}
+
+
+for episode in episodes:
     episode= episode.strip()
     print(episode)
     if len(episode)<5:
@@ -20,10 +24,15 @@ for episode in episodes[0:2]:
         
     html = urllib.request.urlopen(address)
     soup = BS(html, 'html.parser')
-    tag = soup.a
-    tag =tag.get_text()
-    f.write(tag+"\n")
-
+    lines=soup.find_all('b')
+    for line in lines:
+        charecter =line.get_text()
+        charecter = charecter[0:-1]
+        charLine = line.next_sibling
+        f.write(charecter +":")
+        if charLine is not None:
+            f.write(charLine + '\n')
+  
 
 f.close()
     
